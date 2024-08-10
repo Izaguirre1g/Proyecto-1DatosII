@@ -1,3 +1,3 @@
-C:/Users/Jose/Desktop/Proyecto-1DatosII/cmake-build-debug/CMakeFiles/Proyecto_1DatosII.dir
-C:/Users/Jose/Desktop/Proyecto-1DatosII/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/Jose/Desktop/Proyecto-1DatosII/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+C:/Users/Jose/Desktop/Proyecto-1DatosII/Biblioteca/cmake-build-debug/CMakeFiles/Proyecto_1DatosII.dir
+C:/Users/Jose/Desktop/Proyecto-1DatosII/Biblioteca/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/Jose/Desktop/Proyecto-1DatosII/Biblioteca/cmake-build-debug/CMakeFiles/rebuild_cache.dir

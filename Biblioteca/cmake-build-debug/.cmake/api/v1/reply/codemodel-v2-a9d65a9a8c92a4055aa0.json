@@ -49,8 +49,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "C:/Users/Jose/Desktop/Proyecto-1DatosII/cmake-build-debug",
-		"source" : "C:/Users/Jose/Desktop/Proyecto-1DatosII"
+		"build" : "C:/Users/Jose/Desktop/Proyecto-1DatosII/Biblioteca/cmake-build-debug",
+		"source" : "C:/Users/Jose/Desktop/Proyecto-1DatosII/Biblioteca"
 	},
 	"version" : 
 	{
