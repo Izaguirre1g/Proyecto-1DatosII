@@ -31,6 +31,16 @@ public:
     T& operator&(){
         return *dato_tipo_T;
     }
+
+    //Sobrecarga el operador: ==, para poder comparar objetos
+    bool operator==(const MPointer<T>& objeto_comparacion) const{
+        //Compara los objetos si son MPointer o no
+        return dato_tipo_T == objeto_comparacion.dato_tipo_T;
+    }
+    //Sobrecarga el operador: !=, para lograr identificar cuando son isntancias distintas
+    bool operator!=(const MPointer<T>& objeto_comparacion)const{
+        return !(*this == objeto_comparacion);
+    }
 };
 
 
