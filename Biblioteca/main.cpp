@@ -1,10 +1,13 @@
 #include <iostream>
+
 #include "MPointer.cpp"
+
 using namespace std;
 
 //class MPointer;
 
 int main() {
+
     MPointer<int> myPtr = MPointer<int>::New();
     MPointer<int> myPtr2 = MPointer<int>::New();
     *myPtr = 5;
@@ -16,6 +19,11 @@ int main() {
         *myPtr=6;
     }
 
+    /*
+    int a = 10;
+    int *ptr = nullptr;
+    ptr =&a;
+    cout <<*ptr ;
     /**myPtr=5;
     cout << "Sobrecargado *: " <<*myPtr<<endl;
     int valor = *myPtr;
