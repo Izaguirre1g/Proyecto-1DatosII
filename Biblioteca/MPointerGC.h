@@ -1,0 +1,14 @@
+//
+// Created by Jose on 18/08/2024.
+//
+
+#ifndef PROYECTO_1DATOSII_MPOINTERGC_H
+#define PROYECTO_1DATOSII_MPOINTERGC_H
+
+
+class MPointerGC {
+
+};
+
+
+#endif //PROYECTO_1DATOSII_MPOINTERGC_H

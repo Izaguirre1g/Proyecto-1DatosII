@@ -1,12 +1,14 @@
 #include <iostream>
 
 #include "MPointer.cpp"
-
+#include "MPointerGC.cpp"
+#include "MPointer.h"
 using namespace std;
 
 //class MPointer;
 
 int main() {
+    MPointerGC gc;
 
     MPointer<int> myPtr = MPointer<int>::New();
     MPointer<int> myPtr2 = MPointer<int>::New();

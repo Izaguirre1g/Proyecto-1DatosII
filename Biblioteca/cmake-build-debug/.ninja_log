@@ -1,19 +1,4 @@
 # ninja log v5
-2	391	7451383890063318	CMakeFiles/Proyecto_1DatosII.dir/main.cpp.obj	7e4374c3557ab3f9
-7	58	7451383886767577	CMakeFiles/Proyecto_1DatosII.dir/MPointer.cpp.obj	890cd8b5ac939087
-391	473	7451383890900370	Proyecto_1DatosII.exe	b21f78b23c8ea89c
-2	321	7451387158332389	CMakeFiles/Proyecto_1DatosII.dir/main.cpp.obj	7e4374c3557ab3f9
-322	414	7451387159228463	Proyecto_1DatosII.exe	b21f78b23c8ea89c
-2	74	7451387373595225	CMakeFiles/Proyecto_1DatosII.dir/MPointer.cpp.obj	890cd8b5ac939087
-8	431	7451387377161930	CMakeFiles/Proyecto_1DatosII.dir/main.cpp.obj	7e4374c3557ab3f9
-431	537	7451387378153866	Proyecto_1DatosII.exe	b21f78b23c8ea89c
-9	66	7451388674679697	CMakeFiles/Proyecto_1DatosII.dir/MPointer.cpp.obj	890cd8b5ac939087
-3	331	7451388677332826	CMakeFiles/Proyecto_1DatosII.dir/main.cpp.obj	7e4374c3557ab3f9
-331	397	7451388677964207	Proyecto_1DatosII.exe	b21f78b23c8ea89c
-2	391	7453094904541180	CMakeFiles/Proyecto_1DatosII.dir/MPointer.cpp.obj	890cd8b5ac939087
-33	586	7453094906439381	CMakeFiles/Proyecto_1DatosII.dir/main.cpp.obj	7e4374c3557ab3f9
-586	1035	7453094910884102	Proyecto_1DatosII.exe	b21f78b23c8ea89c
-3	363	7453095215854344	CMakeFiles/Proyecto_1DatosII.dir/main.cpp.obj	7e4374c3557ab3f9
-364	475	7453095216888015	Proyecto_1DatosII.exe	b21f78b23c8ea89c
 4	408	7453095343819051	CMakeFiles/Proyecto_1DatosII.dir/main.cpp.obj	7e4374c3557ab3f9
+2	391	7453094904541180	CMakeFiles/Proyecto_1DatosII.dir/MPointer.cpp.obj	890cd8b5ac939087
 409	510	7453095344799010	Proyecto_1DatosII.exe	b21f78b23c8ea89c

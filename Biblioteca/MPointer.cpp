@@ -1,5 +1,4 @@
-#include <cstring>
-#include <thread>
+
 
 using namespace std;
 
@@ -46,25 +45,7 @@ public:
     }
 };
 
-class MPointerGC{
-    struct Nodo{
-        int dato;
-        Nodo *siguiente;
-    };
 
-    Nodo *inicial, *final;
-
-    void insertar(int dato){
-        Nodo *nuevo_nodo = new Nodo(dato, NULL);
-        if(inicial = NULL){
-            inicial = nuevo_nodo;
-            final = nuevo_nodo;
-        }else{
-            final->siguiente = nuevo_nodo;
-            final = final->siguiente;
-        }
-    }
-};
 
 /*Referencias
  *
