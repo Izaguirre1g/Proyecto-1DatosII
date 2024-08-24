@@ -1,90 +1,115 @@
-#include <cstring>
+#include <iostream>
 #include <thread>
+#include <atomic>
+#include <chrono>
 using namespace std;
 
-// Clase Singleton
 class MPointerGC {
+    struct Item {
+        int id;      // ID del elemento
+        int* ptr;    // Puntero al valor
+        Item* next;  // Puntero al siguiente elemento de la lista
+
+        Item(int i, int* p) : id(i), ptr(p), next(nullptr) {}
+    };
+
     struct Nodo {
-        void* ptr;  //Puntero genérico
-        int id;     //Identificador
+        Item* head;  // Cabeza de la lista de elementos
         Nodo* siguiente;
 
-        //Creación de nodos
-        Nodo(void* p, int i) : ptr(p), id(i), siguiente(nullptr) {}
+        Nodo(int* p, int i) : head(new Item(i, p)), siguiente(nullptr) {}
     };
 
     Nodo* inicial;
     Nodo* final;
+    int siguiente_id;
+    atomic<bool> activo;
 
-    static int contadorId;  //Contador estático para generar IDs únicos
-
-    //Constructor privado para evitar instanciación directa
-    MPointerGC() : inicial(nullptr), final(nullptr) {}
-
-    //Destructor privado para manejar la limpieza
-    ~MPointerGC() {
-        while (inicial != nullptr) {
-            Nodo* tmp = inicial;
-            inicial = inicial->siguiente;
-            delete tmp;
-        }
-    }
+    MPointerGC() : inicial(nullptr), final(nullptr), siguiente_id(1), activo(true) {}
 
 public:
-    //Método estático para acceder a la instancia única de la clase
     static MPointerGC& getInstance() {
         static MPointerGC instance;
         return instance;
     }
 
-    //Elimina constructores de copia y operadores de asignación
-    MPointerGC(const MPointerGC&) = delete;
-    MPointerGC& operator=(const MPointerGC&) = delete;
-
-    //Método para registrar un nuevo MPointer en la lista
-    int registrar(void* ptr) {
-        int nuevoId = ++contadorId;  // Genera un nuevo ID
-        Nodo* nuevo_nodo = new Nodo(ptr, nuevoId);
-        if (inicial == nullptr) {
-            inicial = nuevo_nodo;
-            final = nuevo_nodo;
-        } else {
-            final->siguiente = nuevo_nodo;
-            final = final->siguiente;
+    void ejecutar(int n) {
+        int contador = 0;
+        while (activo && contador < n) {
+            this_thread::sleep_for(std::chrono::seconds(1));
+            cout << "Thread MPointerGC ejecutándose, iteración: " << contador + 1 << endl;
+            contador++;
         }
-        return nuevoId;  // Devuelve el ID generado
     }
 
-    //Método para eliminar un nodo de la lista
-    void eliminar(Nodo* posicion) {
-        if (inicial == nullptr || posicion == nullptr) return; // Verificar si la lista o el nodo son nulos
+    void detener() {
+        activo = false;
+    }
 
-        if (inicial == posicion) {  // Si el nodo a eliminar es el primero
-            Nodo* referencia_nodo = inicial;
-            inicial = inicial->siguiente;
-            delete referencia_nodo;
-            if (inicial == nullptr) {  // Si la lista quedó vacía
-                final = nullptr;
+    int registrar(int* ptr) {
+        if (ptr == nullptr) {
+            cerr << "Error: Puntero nulo pasado a registrar()" << endl;
+            return -1;
+        }
+
+        int id = siguiente_id++;
+        if (final == nullptr || final->head == nullptr || final->head->next != nullptr) {
+            Nodo* nuevo_nodo = new Nodo(ptr, id);
+            if (inicial == nullptr) {
+                inicial = nuevo_nodo;
+                final = nuevo_nodo;
+            } else {
+                final->siguiente = nuevo_nodo;
+                final = final->siguiente;
             }
+        } else {
+            Item* newItem = new Item(id, ptr);
+            Item* temp = final->head;
+            while (temp->next != nullptr) {
+                temp = temp->next;
+            }
+            temp->next = newItem;
+        }
+        return id;
+    }
+
+    void operator()(int id) {
+        Nodo* actual = inicial;
+        while (actual != nullptr) {
+            Item* temp = actual->head;
+            while (temp != nullptr) {
+                if (temp->id == id) {
+                    cout << "Elemento con ID " << id << " encontrado, valor: " << *(temp->ptr) << ", direccion de memoria: " << temp->ptr <<endl;
+                    return;
+                }
+                temp = temp->next;
+            }
+            actual = actual->siguiente;
+        }
+        cout << "Elemento con ID " << id << " no encontrado." << endl;
+    }
+
+    void mostrarNodo() {
+        Nodo* actual = inicial;
+        if (actual == nullptr) {
+            cout << "La lista está vacía." << endl;
             return;
         }
 
-        Nodo* actual = inicial;
-        while (actual->siguiente != posicion && actual->siguiente != nullptr) {
+        while (actual != nullptr) {
+            Item* temp = actual->head;
+            while (temp != nullptr) {
+                if (temp->ptr != nullptr) {
+                    cout << "Elemento con ID: " << temp->id<< ", Valor almacenado: " << *(temp->ptr)<< ", Direccion de memoria: " << temp->ptr << endl;
+                } else {
+                    cout << "Elemento con ID: " << temp->id << " tiene un puntero nulo." << endl;
+                }
+                temp = temp->next;
+            }
             actual = actual->siguiente;
         }
-
-        if (actual->siguiente != nullptr) {
-            Nodo* referencia_nodo = actual->siguiente;
-            actual->siguiente = posicion->siguiente;
-            if (referencia_nodo == final) { // Si el nodo a eliminar es el último
-                final = actual;
-            }
-            delete referencia_nodo;
-        }
     }
+
+    MPointerGC(const MPointerGC&) = delete;
+    MPointerGC& operator=(const MPointerGC&) = delete;
 };
-
-//Inicializa el contador estático
-int MPointerGC::contadorId = 0;
-

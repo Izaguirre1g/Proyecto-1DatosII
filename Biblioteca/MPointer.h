@@ -4,9 +4,9 @@
 
 #ifndef PROYECTO_1DATOSII_MPOINTER_H
 #define PROYECTO_1DATOSII_MPOINTER_H
+#include "MPointer.cpp"
 
-
-class MPointer {
+class MPointer_header {
 
 };
 
