@@ -1,29 +1,25 @@
 #include <iostream>
 #include <thread>
 #include <atomic>
+#include <mutex>
 #include <chrono>
 using namespace std;
 
+struct Nodo {
+    int id;        // ID del elemento
+    int* ptr;      // Puntero al valor
+    int ref_count; // Contador de referencias
+    Nodo* siguiente; // Puntero al siguiente elemento de la lista
+
+    Nodo(int i, int* p) : id(i), ptr(p), ref_count(1), siguiente(nullptr) {}
+};
+
 class MPointerGC {
-    struct Item {
-        int id;      // ID del elemento
-        int* ptr;    // Puntero al valor
-        Item* next;  // Puntero al siguiente elemento de la lista
-
-        Item(int i, int* p) : id(i), ptr(p), next(nullptr) {}
-    };
-
-    struct Nodo {
-        Item* head;  // Cabeza de la lista de elementos
-        Nodo* siguiente;
-
-        Nodo(int* p, int i) : head(new Item(i, p)), siguiente(nullptr) {}
-    };
-
-    Nodo* inicial;
-    Nodo* final;
-    int siguiente_id;
+    Nodo* inicial; // Cabeza de la lista enlazada
+    Nodo* final;   // Final de la lista enlazada
+    int siguiente_id; // Para autogenerar IDs
     atomic<bool> activo;
+    mutex mtx;
 
     MPointerGC() : inicial(nullptr), final(nullptr), siguiente_id(1), activo(true) {}
 
@@ -33,6 +29,7 @@ public:
         return instance;
     }
 
+    // Función para ejecutar el hilo de GC
     void ejecutar(int n) {
         int contador = 0;
         while (activo && contador < n) {
@@ -42,54 +39,82 @@ public:
         }
     }
 
+    // Detener el thread de GC
     void detener() {
         activo = false;
     }
 
+    // Registrar un nuevo puntero en la lista
     int registrar(int* ptr) {
+        lock_guard<mutex> lock(mtx);
         if (ptr == nullptr) {
             cerr << "Error: Puntero nulo pasado a registrar()" << endl;
             return -1;
         }
 
         int id = siguiente_id++;
-        if (final == nullptr || final->head == nullptr || final->head->next != nullptr) {
-            Nodo* nuevo_nodo = new Nodo(ptr, id);
-            if (inicial == nullptr) {
-                inicial = nuevo_nodo;
-                final = nuevo_nodo;
-            } else {
-                final->siguiente = nuevo_nodo;
-                final = final->siguiente;
-            }
+        Nodo* nuevo_nodo = new Nodo(id, ptr);
+
+        // Inserta al final de la lista
+        if (inicial == nullptr) {
+            inicial = nuevo_nodo;
+            final = nuevo_nodo;
         } else {
-            Item* newItem = new Item(id, ptr);
-            Item* temp = final->head;
-            while (temp->next != nullptr) {
-                temp = temp->next;
-            }
-            temp->next = newItem;
+            final->siguiente = nuevo_nodo;
+            final = nuevo_nodo;
         }
+
         return id;
     }
 
-    void operator()(int id) {
+    // Incrementar el contador de referencias
+    void incrementarContador(int id) {
+        lock_guard<mutex> lock(mtx);
         Nodo* actual = inicial;
         while (actual != nullptr) {
-            Item* temp = actual->head;
-            while (temp != nullptr) {
-                if (temp->id == id) {
-                    cout << "Elemento con ID " << id << " encontrado, valor: " << *(temp->ptr) << ", direccion de memoria: " << temp->ptr <<endl;
-                    return;
-                }
-                temp = temp->next;
+            if (actual->id == id) {
+                actual->ref_count++;
+                break;
             }
             actual = actual->siguiente;
         }
-        cout << "Elemento con ID " << id << " no encontrado." << endl;
     }
 
-    void mostrarNodo() {
+    // Decrementar el contador de referencias y liberar memoria si es necesario
+    void decrementarContador(int id) {
+        lock_guard<mutex> lock(mtx);
+        Nodo* actual = inicial;
+        Nodo* anterior = nullptr;
+
+        while (actual != nullptr) {
+            if (actual->id == id) {
+                actual->ref_count--; // Decrementar el contador de referencias
+                if (actual->ref_count == 0) {
+                    // Si el contador llega a cero, liberar memoria y eliminar el nodo
+                    if (anterior == nullptr) { // Eliminar la cabeza
+                        inicial = actual->siguiente;
+                        if (inicial == nullptr) {
+                            final = nullptr; // Si la lista queda vacía
+                        }
+                    } else {
+                        anterior->siguiente = actual->siguiente;
+                        if (anterior->siguiente == nullptr) {
+                            final = anterior; // Actualizar el final si se elimina el último nodo
+                        }
+                    }
+                    delete actual->ptr; // Liberar la memoria del puntero
+                    delete actual;      // Eliminar el nodo
+                }
+                break;
+            }
+            anterior = actual;
+            actual = actual->siguiente;
+        }
+    }
+
+    // Mostrar todos los elementos en la lista
+    void mostrarItems() {
+        lock_guard<mutex> lock(mtx);
         Nodo* actual = inicial;
         if (actual == nullptr) {
             cout << "La lista está vacía." << endl;
@@ -97,19 +122,28 @@ public:
         }
 
         while (actual != nullptr) {
-            Item* temp = actual->head;
-            while (temp != nullptr) {
-                if (temp->ptr != nullptr) {
-                    cout << "Elemento con ID: " << temp->id<< ", Valor almacenado: " << *(temp->ptr)<< ", Direccion de memoria: " << temp->ptr << endl;
-                } else {
-                    cout << "Elemento con ID: " << temp->id << " tiene un puntero nulo." << endl;
-                }
-                temp = temp->next;
-            }
+            cout << "ID: " << actual->id << ", Valor: " << *(actual->ptr) << ", Referencias: " << actual->ref_count << endl;
             actual = actual->siguiente;
         }
     }
 
+    // Sobrecarga del operador () para mostrar un elemento por ID
+    void operator()(int id) {
+        lock_guard<mutex> lock(mtx);
+        Nodo* actual = inicial;
+        while (actual != nullptr) {
+            if (actual->id == id) {
+                cout << "Elemento con ID " << id << " encontrado, valor: " << *(actual->ptr) << ", direccion de memoria: " << actual->ptr << endl;
+                return;
+            }
+            actual = actual->siguiente;
+        }
+        cout << "Elemento con ID " << id << " no encontrado." << endl;
+    }
+
+    // Evitar la copia del singleton
     MPointerGC(const MPointerGC&) = delete;
     MPointerGC& operator=(const MPointerGC&) = delete;
 };
+
+

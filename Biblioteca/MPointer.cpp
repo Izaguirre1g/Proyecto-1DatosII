@@ -1,53 +1,70 @@
 #include <typeinfo>
-
+#include "MPointerGC.cpp"
 using namespace std;
 
 template <typename T>//Se declara a la clase como una plantilla para establecer tipos de datos
-class MPointer{
-
-//Atributos
+class MPointer {
 private:
-    T* dato_tipo_T; //Puntero a un dato tipo T de MPointer
+    T* dato_tipo_T; // Puntero al dato
+    int id;         // ID único en MPointerGC
 
-    //Constructor del objeto(clase)
-    MPointer() : dato_tipo_T(new T){}
+    MPointer() : dato_tipo_T(new T) {
+        id = MPointerGC::getInstance().registrar(dato_tipo_T);
+    }
 
-//Métodos
 public:
-    //Método que permite realizar la llamada(instancia) de MPointer
-    static MPointer<T> New(){
+    static MPointer<T> New() {
         return MPointer<T>();
     }
 
-    //Evita los memory leaks (libera la memoria)
-    ~MPointer(){
-        delete dato_tipo_T;
+    ~MPointer() {
+        MPointerGC::getInstance().decrementarContador(id);
     }
 
-    //Sobrecarga del operador: * para utilizarlo sin haberlo declarado
-    T& operator*(){
+    // Sobrecarga del operador de dereferenciación
+    T& operator*() {
         return *dato_tipo_T;
     }
 
-    //Sobrecarga del operador: & para obtener el valor que guarda la dirección de memoria
-    T* operator&(){
-        return *dato_tipo_T;
-    }
-    T* obtenerPtr() const {
+    // Sobrecarga del operador de dirección
+    T* operator&() {
         return dato_tipo_T;
     }
-    //Sobrecarga el operador: ==, para poder comparar objetos
-    bool operator==(const MPointer<T>& objeto_comparacion) const{
-        //Compara los objetos si son MPointer o no
-        //return dato_tipo_T == objeto_comparacion.dato_tipo_T; //Verifica si tienen el mismo valor
-        return typeid(*this) == typeid(objeto_comparacion);
+
+    // Constructor de copia para manejar shallow copy
+    MPointer(const MPointer<T>& repetido) {
+        dato_tipo_T = repetido.dato_tipo_T;
+        id = repetido.id;
+        MPointerGC::getInstance().incrementarContador(id);
     }
-    //Sobrecarga el operador: !=, para lograr identificar cuando son isntancias distintas
-    bool operator!=(const MPointer<T>& objeto_comparacion)const{
-        return !(*this == objeto_comparacion);
+
+    // Operador de asignación para manejar shallow copy
+    MPointer<T>& operator=(const MPointer<T>& copia) {
+        if (this == &copia) return *this;
+
+        // Decrementar el contador de la instancia actual
+        MPointerGC::getInstance().decrementarContador(id);
+
+        // Copiar datos de la otra instancia
+        dato_tipo_T = copia.dato_tipo_T;
+        id = copia.id;
+
+        // Incrementar el contador de la nueva instancia
+        MPointerGC::getInstance().incrementarContador(id);
+
+        return *this;
+    }
+
+    // Sobrecarga del operador == para comparar objetos MPointer
+    bool operator==(const MPointer<T>& tipo_dato) const {
+        return dato_tipo_T == tipo_dato.dato_tipo_T;
+    }
+
+    // Sobrecarga del operador != para comparar objetos MPointer
+    bool operator!=(const MPointer<T>& tipo_dato) const {
+        return !(*this == tipo_dato);
     }
 };
-
 
 
 /*Referencias
