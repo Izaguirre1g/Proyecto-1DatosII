@@ -1,70 +1,75 @@
-#include <typeinfo>
-#include "MPointerGC.cpp"
-using namespace std;
+#include "MPointerGC.h"
 
-template <typename T>//Se declara a la clase como una plantilla para establecer tipos de datos
-class MPointer {
-private:
-    T* dato_tipo_T; // Puntero al dato
-    int id;         // ID único en MPointerGC
+template <typename T>
+MPointer<T>::MPointer() : dato_tipo_T(new T) {
+    id = MPointerGC::getInstance().registrar(dato_tipo_T);
+}
 
-    MPointer() : dato_tipo_T(new T) {
-        id = MPointerGC::getInstance().registrar(dato_tipo_T);
-    }
+template <typename T>
+MPointer<T> MPointer<T>::New() {
+    return MPointer<T>();
+}
 
-public:
-    static MPointer<T> New() {
-        return MPointer<T>();
-    }
+template <typename T>
+MPointer<T>& MPointer<T>::operator=(const T& valor) {
+    *dato_tipo_T = valor;
+    return *this;
+}
 
-    ~MPointer() {
-        MPointerGC::getInstance().decrementarContador(id);
-    }
+template <typename T>
+MPointer<T>::~MPointer() {
+    MPointerGC::getInstance().decrementarContador(id);
+    delete dato_tipo_T; // Liberar la memoria
+}
 
-    // Sobrecarga del operador de dereferenciación
-    T& operator*() {
-        return *dato_tipo_T;
-    }
+template <typename T>
+T& MPointer<T>::operator*() {
+    return *dato_tipo_T;
+}
 
-    // Sobrecarga del operador de dirección
-    T* operator&() {
-        return dato_tipo_T;
-    }
+template <typename T>
+T* MPointer<T>::operator&() {
+    return dato_tipo_T;
+}
 
-    // Constructor de copia para manejar shallow copy
-    MPointer(const MPointer<T>& repetido) {
-        dato_tipo_T = repetido.dato_tipo_T;
-        id = repetido.id;
-        MPointerGC::getInstance().incrementarContador(id);
-    }
+template <typename T>
+MPointer<T>::MPointer(const MPointer<T>& repetido) {
+    dato_tipo_T = repetido.dato_tipo_T;
+    id = repetido.id;
+    MPointerGC::getInstance().incrementarContador(id);
+}
 
-    // Operador de asignación para manejar shallow copy
-    MPointer<T>& operator=(const MPointer<T>& copia) {
-        if (this == &copia) return *this;
+template <typename T>
+MPointer<T>& MPointer<T>::operator=(const MPointer<T>& copia) {
+    if (this == &copia) return *this;
 
-        // Decrementar el contador de la instancia actual
-        MPointerGC::getInstance().decrementarContador(id);
+    // Decrementar el contador de la instancia actual
+    MPointerGC::getInstance().decrementarContador(id);
 
-        // Copiar datos de la otra instancia
-        dato_tipo_T = copia.dato_tipo_T;
-        id = copia.id;
+    // Copiar datos de la otra instancia
+    dato_tipo_T = copia.dato_tipo_T;
+    id = copia.id;
 
-        // Incrementar el contador de la nueva instancia
-        MPointerGC::getInstance().incrementarContador(id);
+    // Incrementar el contador de la nueva instancia
+    MPointerGC::getInstance().incrementarContador(id);
 
-        return *this;
-    }
+    return *this;
+}
 
-    // Sobrecarga del operador == para comparar objetos MPointer
-    bool operator==(const MPointer<T>& tipo_dato) const {
-        return dato_tipo_T == tipo_dato.dato_tipo_T;
-    }
+template <typename T>
+bool MPointer<T>::operator==(const MPointer<T>& tipo_dato) const {
+    return dato_tipo_T == tipo_dato.dato_tipo_T;
+}
 
-    // Sobrecarga del operador != para comparar objetos MPointer
-    bool operator!=(const MPointer<T>& tipo_dato) const {
-        return !(*this == tipo_dato);
-    }
-};
+template <typename T>
+bool MPointer<T>::operator!=(const MPointer<T>& tipo_dato) const {
+    return !(*this == tipo_dato);
+}
+
+template <typename T>
+MPointer<T>::MPointer(T valor) : dato_tipo_T(new T(valor)) {
+    id = MPointerGC::getInstance().registrar(dato_tipo_T);
+}
 
 
 /*Referencias

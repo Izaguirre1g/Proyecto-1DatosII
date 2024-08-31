@@ -1,32 +1,33 @@
 #include <iostream>
-#include <thread>
-#include <atomic>
-#include <unordered_map>
-#include <chrono>
-#include <mutex>
-
-#include "MPointer.cpp"
-
+#include "ListaNodos.h"
+#include "QuickSort.h"
+#include "MPointer.h"
+#include "MPointerGC.h"
 using namespace std;
 
 // Función principal
 int main() {
     MPointer<int> myPtr = MPointer<int>::New();
     MPointer<int> myPtr2 = MPointer<int>::New();
-    MPointer<int> myPtr3 = MPointer<int>::New();
-    MPointer<int> myPtr4 = MPointer<int>::New();
-    MPointer<int> myPtr5 = MPointer<int>::New();
-    MPointer<int> myPtr6 = MPointer<int>::New();
     *myPtr = 5;
-    *myPtr2=78;
-    *myPtr3=7;
-    *myPtr4=8;
-    *myPtr5=780;
-    *myPtr6=898;
+    myPtr2 = 7; //Deja en myPtr2 una referencia a la misma dirección
 
-    cout << "Valor de p1: " << *&*myPtr << endl;
-    cout << "Valor de p2: " << *myPtr2 << endl;
+    /*ListaNodos lista;
+    lista.insertar(*myPtr);
+    lista.insertar(*myPtr2);
+    lista.insertar(75);
+    lista.insertar(8000);
+    lista.insertar(780);
+    lista.insertar(898);
 
-    // El destructor se invocará automáticamente al salir de main()
+    cout << "Lista antes de ordenar: ";
+    lista.mostrarLista();
+
+    ordenarLista(lista);
+
+    cout << "Lista después de ordenar: ";
+    lista.mostrarLista();*/
+
+    MPointerGC::getInstance().mostrarNodos();
     return 0;
 }

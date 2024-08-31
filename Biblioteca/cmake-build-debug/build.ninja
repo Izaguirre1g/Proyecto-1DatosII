@@ -55,14 +55,20 @@ build CMakeFiles/Proyecto_1DatosII.dir/main.cpp.obj: CXX_COMPILER__Proyecto_1Dat
   OBJECT_DIR = CMakeFiles\Proyecto_1DatosII.dir
   OBJECT_FILE_DIR = CMakeFiles\Proyecto_1DatosII.dir
 
-build CMakeFiles/Proyecto_1DatosII.dir/MPointer.cpp.obj: CXX_COMPILER__Proyecto_1DatosII_unscanned_Debug C$:/Users/Jose/Desktop/Proyecto-1DatosII/Biblioteca/MPointer.cpp || cmake_object_order_depends_target_Proyecto_1DatosII
-  DEP_FILE = CMakeFiles\Proyecto_1DatosII.dir\MPointer.cpp.obj.d
+build CMakeFiles/Proyecto_1DatosII.dir/ListaNodos.cpp.obj: CXX_COMPILER__Proyecto_1DatosII_unscanned_Debug C$:/Users/Jose/Desktop/Proyecto-1DatosII/Biblioteca/ListaNodos.cpp || cmake_object_order_depends_target_Proyecto_1DatosII
+  DEP_FILE = CMakeFiles\Proyecto_1DatosII.dir\ListaNodos.cpp.obj.d
   FLAGS = -g -std=gnu++20 -fdiagnostics-color=always
   OBJECT_DIR = CMakeFiles\Proyecto_1DatosII.dir
   OBJECT_FILE_DIR = CMakeFiles\Proyecto_1DatosII.dir
 
 build CMakeFiles/Proyecto_1DatosII.dir/MPointerGC.cpp.obj: CXX_COMPILER__Proyecto_1DatosII_unscanned_Debug C$:/Users/Jose/Desktop/Proyecto-1DatosII/Biblioteca/MPointerGC.cpp || cmake_object_order_depends_target_Proyecto_1DatosII
   DEP_FILE = CMakeFiles\Proyecto_1DatosII.dir\MPointerGC.cpp.obj.d
+  FLAGS = -g -std=gnu++20 -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\Proyecto_1DatosII.dir
+  OBJECT_FILE_DIR = CMakeFiles\Proyecto_1DatosII.dir
+
+build CMakeFiles/Proyecto_1DatosII.dir/Quicksort.cpp.obj: CXX_COMPILER__Proyecto_1DatosII_unscanned_Debug C$:/Users/Jose/Desktop/Proyecto-1DatosII/Biblioteca/Quicksort.cpp || cmake_object_order_depends_target_Proyecto_1DatosII
+  DEP_FILE = CMakeFiles\Proyecto_1DatosII.dir\Quicksort.cpp.obj.d
   FLAGS = -g -std=gnu++20 -fdiagnostics-color=always
   OBJECT_DIR = CMakeFiles\Proyecto_1DatosII.dir
   OBJECT_FILE_DIR = CMakeFiles\Proyecto_1DatosII.dir
@@ -75,7 +81,7 @@ build CMakeFiles/Proyecto_1DatosII.dir/MPointerGC.cpp.obj: CXX_COMPILER__Proyect
 #############################################
 # Link the executable Proyecto_1DatosII.exe
 
-build Proyecto_1DatosII.exe: CXX_EXECUTABLE_LINKER__Proyecto_1DatosII_Debug CMakeFiles/Proyecto_1DatosII.dir/main.cpp.obj CMakeFiles/Proyecto_1DatosII.dir/MPointer.cpp.obj CMakeFiles/Proyecto_1DatosII.dir/MPointerGC.cpp.obj
+build Proyecto_1DatosII.exe: CXX_EXECUTABLE_LINKER__Proyecto_1DatosII_Debug CMakeFiles/Proyecto_1DatosII.dir/main.cpp.obj CMakeFiles/Proyecto_1DatosII.dir/ListaNodos.cpp.obj CMakeFiles/Proyecto_1DatosII.dir/MPointerGC.cpp.obj CMakeFiles/Proyecto_1DatosII.dir/Quicksort.cpp.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\Proyecto_1DatosII.dir
