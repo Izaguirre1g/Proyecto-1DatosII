@@ -1,33 +1,30 @@
 #include <iostream>
-#include "ListaNodos.h"
-#include "QuickSort.h"
-#include "MPointer.h"
-#include "MPointerGC.h"
 using namespace std;
 
-// Función principal
+// Incluye el encabezado de MPointer
+#include "MPointer.h"
+
 int main() {
-    MPointer<int> myPtr = MPointer<int>::New();
-    MPointer<int> myPtr2 = MPointer<int>::New();
-    *myPtr = 5;
-    myPtr2 = 7; //Deja en myPtr2 una referencia a la misma dirección
+    MPointer<int> myPtr = MPointer<int>::New(); // Crear un MPointer de tipo int
+    MPointer<int> myPtr2 = MPointer<int>::New(); // Crear otro MPointer de tipo int
+    MPointer<bool> myPtr3 = MPointer<bool>::New(); // Crear un MPointer de tipo bool
 
-    /*ListaNodos lista;
-    lista.insertar(*myPtr);
-    lista.insertar(*myPtr2);
-    lista.insertar(75);
-    lista.insertar(8000);
-    lista.insertar(780);
-    lista.insertar(898);
+    myPtr3 = true;
+    myPtr = 5; // Asignar un valor a myPtr
+    myPtr=myPtr2;
+    // Comparar si las direcciones de memoria son iguales
+    if (&*myPtr == &*myPtr2) {
+        cout << "myPtr y myPtr2 apuntan a la misma dirección de memoria" << endl;
+    } else {
+        cout << "myPtr y myPtr2 no apuntan a la misma dirección de memoria" << endl;
+    }
 
-    cout << "Lista antes de ordenar: ";
-    lista.mostrarLista();
+    if ((void*)&*myPtr3 == (void*)&*myPtr) {
+        cout << "myPtr y myPtr3 apuntan a la misma dirección de memoria" << endl;
+    } else {
+        cout << "myPtr y myPtr3 no apuntan a la misma dirección de memoria" << endl;
+    }
 
-    ordenarLista(lista);
-
-    cout << "Lista después de ordenar: ";
-    lista.mostrarLista();*/
-
-    MPointerGC::getInstance().mostrarNodos();
     return 0;
 }
+

@@ -8,4 +8,5 @@ add_executable(Proyecto_1DatosII
         ListaNodos.cpp
         MPointerGC.cpp
         Quicksort.cpp
+        MPointer.cpp
 )
