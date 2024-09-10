@@ -1,45 +1,40 @@
 #ifndef MPOINTERGC_H
 #define MPOINTERGC_H
 
-#include <atomic>
 #include <mutex>
 #include <thread>
+#include <chrono>
+#include <iostream>
 
 using namespace std;
 
 class MPointerGC {
 private:
     struct Nodo {
-        int id; // ID del elemento
-        int* ptr; // Puntero al valor
-        int referencia_contador; // Contador de referencias
-        Nodo* siguiente; // Puntero al siguiente nodo
-
-        Nodo(int i, int* p);
+        int id;
+        int* ptr;
+        int referencia_contador;
+        Nodo* siguiente;
+        Nodo(int id, int* ptr, int ref_count) : id(id), ptr(ptr), referencia_contador(ref_count), siguiente(nullptr) {}
     };
 
-    Nodo* cabeza; // Cabeza de la lista enlazada
-    int siguiente_id; // Para autogenerar IDs
-    std::atomic<bool> activo;
-    std::mutex mtx;
-    std::thread garbageCollectorThread;
+    Nodo* cabeza;
+    int siguiente_id;
+    bool activo;
+    mutex mtx;
+    thread garbageCollectorThread;
 
-    MPointerGC();
-    ~MPointerGC();
-
+    MPointerGC(); // Constructor privado
     void ejecutar();
-    void detener();
 
 public:
+    ~MPointerGC();
     static MPointerGC& getInstance();
-
+    void detener();
     int registrar(int* ptr);
     void incrementarContador(int id);
     void decrementarContador(int id);
     void mostrarNodos();
-
-    MPointerGC(const MPointerGC&) = delete;
-    MPointerGC& operator=(const MPointerGC&) = delete;
 };
 
 #endif // MPOINTERGC_H

@@ -5,11 +5,12 @@
 
 template <typename T>
 class MPointer {
-private:
+public:
     T* dato_tipo_T;
+    int id; // ID para identificar la instancia en MPointerGC
 
     // Constructor privado
-    MPointer();
+    MPointer(T* ptr);
 
 public:
     // Método estático para crear una nueva instancia de MPointer
@@ -18,14 +19,17 @@ public:
     // Sobrecarga del operador de asignación para aceptar un valor del tipo T
     MPointer<T>& operator=(const T& valor);
 
+    // Sobrecarga del operador de asignación para copiar otro MPointer
+    MPointer<T>& operator=(const MPointer<T>& otro);
+
     // Destructor
     ~MPointer();
 
     // Sobrecarga del operador de desreferenciación (*)
     T& operator*();
 
-    // Sobrecarga del operador de dirección (&)
-    T* operator&();
+    // Sobrecarga del operador de acceso a miembros (->)
+    T* operator->();
 
     // Sobrecarga del operador == para comparar objetos MPointer
     bool operator==(const MPointer<T>& tipo_dato) const;
@@ -37,26 +41,46 @@ public:
 // Implementación de la plantilla
 
 template <typename T>
-MPointer<T>::MPointer() : dato_tipo_T(new T) {
+MPointer<T>::MPointer(T* ptr) : dato_tipo_T(ptr) {
     // Registrar la dirección de la nueva instancia en MPointerGC
-    //MPointerGC::Registrar(this);
+    id = MPointerGC::getInstance().registrar(ptr); // Obtener el ID de MPointerGC
 }
 
 template <typename T>
 MPointer<T> MPointer<T>::New() {
-    return MPointer<T>();
+    // Crear una nueva instancia de MPointer
+    T* newPtr = new T();
+    return MPointer<T>(newPtr);
 }
 
 template <typename T>
 MPointer<T>& MPointer<T>::operator=(const T& valor) {
-    *dato_tipo_T = valor;
+    if (dato_tipo_T) {
+        *dato_tipo_T = valor;
+    }
+    return *this;
+}
+
+template <typename T>
+MPointer<T>& MPointer<T>::operator=(const MPointer<T>& otro) {
+    if (this != &otro) { // Evitar auto-asignación
+        // Disminuir el contador de referencias del puntero actual
+        MPointerGC::getInstance().decrementarContador(id);
+
+        // Copiar la dirección y ID del otro MPointer
+        dato_tipo_T = otro.dato_tipo_T;
+        id = otro.id;
+
+        // Aumentar el contador de referencias del nuevo puntero
+        MPointerGC::getInstance().incrementarContador(id);
+    }
     return *this;
 }
 
 template <typename T>
 MPointer<T>::~MPointer() {
     // Desregistrar la dirección de la instancia en MPointerGC
-    //MPointerGC::Desregistrar(this);
+    MPointerGC::getInstance().decrementarContador(id);
     // No se realiza liberación de memoria aquí
 }
 
@@ -66,7 +90,7 @@ T& MPointer<T>::operator*() {
 }
 
 template <typename T>
-T* MPointer<T>::operator&() {
+T* MPointer<T>::operator->() {
     return dato_tipo_T;
 }
 
@@ -81,9 +105,6 @@ bool MPointer<T>::operator!=(const MPointer<T>& tipo_dato) const {
 }
 
 // Explicitar las instanciaciones de plantilla necesarias
-template class MPointer<int>; // Agrega otras instanciaciones si es necesario
-// Puedes agregar otras instanciaciones aquí, por ejemplo:
-// template class MPointer<double>;
-// template class MPointer<std::string>;
+// template class MPointer<int>;
 
 #endif // MPOINTER_H

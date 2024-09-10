@@ -1,9 +1,4 @@
 #include "MPointerGC.h"
-#include <iostream>
-
-using namespace std;
-
-MPointerGC::Nodo::Nodo(int i, int* p) : id(i), ptr(p), referencia_contador(1), siguiente(nullptr) {}
 
 MPointerGC::MPointerGC() : cabeza(nullptr), siguiente_id(1), activo(true) {
     garbageCollectorThread = thread(&MPointerGC::ejecutar, this); // Inicia el hilo
@@ -17,16 +12,15 @@ MPointerGC::~MPointerGC() {
 }
 
 MPointerGC& MPointerGC::getInstance() {
-    static MPointerGC instance;
+    static MPointerGC instance; // Instancia única
     return instance;
 }
 
 void MPointerGC::ejecutar() {
     while (activo) {
-        this_thread::sleep_for(std::chrono::seconds(1));
+        this_thread::sleep_for(chrono::seconds(1));
         cout << "Thread MPointerGC ejecutándose" << endl;
-
-        mostrarNodos();
+        mostrarNodos(); // Opcional para depuración
     }
 }
 
@@ -37,12 +31,12 @@ void MPointerGC::detener() {
 int MPointerGC::registrar(int* ptr) {
     lock_guard<mutex> lock(mtx);
     if (ptr == nullptr) {
-        cerr << "Error: Puntero nulo pasado a registrar()" << endl;
+        cout << "Error: Puntero nulo pasado a registrar()" << endl;
         return -1;
     }
 
     int id = siguiente_id++;
-    Nodo* nuevo_nodo = new Nodo(id, ptr);
+    Nodo* nuevo_nodo = new Nodo(id, ptr, 1); // Inicia con contador de referencia en 1
     nuevo_nodo->siguiente = cabeza;
     cabeza = nuevo_nodo;
 
@@ -89,14 +83,15 @@ void MPointerGC::decrementarContador(int id) {
 void MPointerGC::mostrarNodos() {
     lock_guard<mutex> lock(mtx);
     Nodo* actual = cabeza;
-    if (actual == nullptr) {
-        cout << "La lista está vacía." << endl;
-        return;
-    }
+
 
     while (actual != nullptr) {
-        cout << "ID: " << actual->id << ", Valor: " << *(actual->ptr) << ", Referencias: " << actual->referencia_contador << ", Dirección de memoria: " << &*(actual->ptr) << endl;
+        cout << "ID: " << actual->id
+             << ", Valor: " << *(actual->ptr)
+             << ", Referencias: " << actual->referencia_contador
+             << ", Direccion de memoria: " << actual->ptr << endl;
         actual = actual->siguiente;
     }
 }
+
 
