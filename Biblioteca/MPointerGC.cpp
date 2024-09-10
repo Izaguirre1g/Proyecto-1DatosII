@@ -19,7 +19,7 @@ MPointerGC& MPointerGC::getInstance() {
 void MPointerGC::ejecutar() {
     while (activo) {
         this_thread::sleep_for(chrono::seconds(1));
-        cout << "Thread MPointerGC ejecutándose" << endl;
+        //cout << "Thread MPointerGC ejecutándose" << endl;
         mostrarNodos(); // Opcional para depuración
     }
 }
@@ -28,7 +28,7 @@ void MPointerGC::detener() {
     activo = false;
 }
 
-int MPointerGC::registrar(int* ptr) {
+int MPointerGC::registrar(void* ptr) {
     lock_guard<mutex> lock(mtx);
     if (ptr == nullptr) {
         cout << "Error: Puntero nulo pasado a registrar()" << endl;
@@ -70,7 +70,7 @@ void MPointerGC::decrementarContador(int id) {
                 } else {
                     anterior->siguiente = actual->siguiente;
                 }
-                delete actual->ptr;
+                delete static_cast<int*>(actual->ptr); // Cast a int* para eliminar
                 delete actual;
             }
             break;
@@ -83,15 +83,17 @@ void MPointerGC::decrementarContador(int id) {
 void MPointerGC::mostrarNodos() {
     lock_guard<mutex> lock(mtx);
     Nodo* actual = cabeza;
-
+    if (actual == nullptr) {
+        //cout << "La lista está vacía." << endl;
+        return;
+    }
 
     while (actual != nullptr) {
         cout << "ID: " << actual->id
-             << ", Valor: " << *(actual->ptr)
+             << ", Valor: " << *(static_cast<int*>(actual->ptr))
              << ", Referencias: " << actual->referencia_contador
-             << ", Direccion de memoria: " << actual->ptr << endl;
+             << ", Dirección de memoria: " << actual->ptr << endl;
         actual = actual->siguiente;
     }
 }
-
 

@@ -12,10 +12,10 @@ class MPointerGC {
 private:
     struct Nodo {
         int id;
-        int* ptr;
+        void* ptr; // Usar void* para almacenar cualquier tipo de puntero
         int referencia_contador;
         Nodo* siguiente;
-        Nodo(int id, int* ptr, int ref_count) : id(id), ptr(ptr), referencia_contador(ref_count), siguiente(nullptr) {}
+        Nodo(int id, void* ptr, int ref_count) : id(id), ptr(ptr), referencia_contador(ref_count), siguiente(nullptr) {}
     };
 
     Nodo* cabeza;
@@ -31,11 +31,10 @@ public:
     ~MPointerGC();
     static MPointerGC& getInstance();
     void detener();
-    int registrar(int* ptr);
+    int registrar(void* ptr);
     void incrementarContador(int id);
     void decrementarContador(int id);
     void mostrarNodos();
 };
 
 #endif // MPOINTERGC_H
-

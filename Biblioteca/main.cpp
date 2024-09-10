@@ -16,6 +16,8 @@ int main() {
     MPointer<int> myPtr2 = MPointer<int>::New();
     MPointer<int> myPtr3 = MPointer<int>::New();
     MPointer<int> myPtr4 = MPointer<int>::New();
+    MPointer<int> myPtr5 = MPointer<int>::New();
+    myPtr5=755;
     // Asignar valor a myPtr
     *myPtr = 5;
     myPtr3 =78;
@@ -34,6 +36,11 @@ int main() {
 
     // Limpiar y finalizar
     gc.detener();
+    cout << *myPtr<<endl;
+    cout << *myPtr2<<endl;
 
     return 0;
 }
+
+
+
