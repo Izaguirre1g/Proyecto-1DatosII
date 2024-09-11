@@ -9,4 +9,6 @@ add_executable(Proyecto_1DatosII
         MPointerGC.cpp
         Quicksort.cpp
         MPointer.cpp
+        DoubleLinkedList.cpp
+        DoubleLinkedList.h
 )

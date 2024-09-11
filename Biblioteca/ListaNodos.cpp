@@ -1,7 +1,7 @@
 #include "ListaNodos.h"
 #include <stdexcept>
 #include <iostream>
-
+/*
 // Inserta un nodo al final de la lista
 void ListaNodos::insertar(int valor) {
     Nodo* nuevoNodo = new Nodo(valor);
@@ -62,5 +62,5 @@ ListaNodos::~ListaNodos() {
         delete actual;
         actual = siguiente;
     }
-}
+}*/
 

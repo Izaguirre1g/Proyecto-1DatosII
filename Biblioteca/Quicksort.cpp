@@ -1,5 +1,5 @@
 #include "quicksort.h"
-
+/*
 // Función de partición para QuickSort
 int particion(ListaNodos& lista, int bajo, int alto) {
     int pivot = lista.get(alto); // Elegir el último elemento como pivote
@@ -35,4 +35,4 @@ void quickSort(ListaNodos& lista, int bajo, int alto) {
 // Función para ordenar la lista utilizando QuickSort
 void ordenarLista(ListaNodos& lista) {
     quickSort(lista, 0, lista.size() - 1);
-}
+*/

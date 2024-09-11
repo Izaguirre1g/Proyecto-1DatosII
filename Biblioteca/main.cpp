@@ -1,5 +1,6 @@
 #include "MPointer.h"
 #include "MPointerGC.h"
+#include "DoubleLinkedList.h"
 #include <iostream>
 
 using namespace std;
@@ -36,10 +37,26 @@ int main() {
 
     // Limpiar y finalizar
     gc.detener();
-    cout << *myPtr<<endl;
-    cout << *myPtr2<<endl;
+
+    /******************************************************************/
+    /******************************************************************/
+    // Crear una lista doblemente enlazada
+    DoubleLinkedList lista;
+
+    // Agregar algunos valores a la lista
+    lista.add(10);
+    lista.add(20);
+    lista.add(30);
+
+
+    // Imprimir la lista
+    cout << "Lista de elementos en MPointer"<<endl;
+    lista.printList();
+
+
 
     return 0;
+
 }
 
 
