@@ -106,7 +106,10 @@
 			"name" : "Header Files",
 			"sourceIndexes" : 
 			[
-				6
+				6,
+				7,
+				8,
+				9
 			]
 		}
 	],
@@ -151,6 +154,21 @@
 		{
 			"backtrace" : 1,
 			"path" : "DoubleLinkedList.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "Quicksort.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "BubbleSort.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "InsertionSort.h",
 			"sourceGroupIndex" : 1
 		}
 	],

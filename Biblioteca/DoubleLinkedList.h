@@ -15,6 +15,15 @@ public:
 
     Node() = default;                // Constructor por defecto.
     Node(int val) : value(val) {}    // Constructor para inicializar el valor del nodo.
+
+    int getDato() const{
+        return value;
+    }
+
+    void set(int val){
+        value = val;
+    }
+
 };
 
 class DoubleLinkedList {
@@ -56,6 +65,43 @@ public:
             MPointerGC::getInstance().registrar(&(current->value)); // Registrar el valor del nodo.
             current = current->next;            // Avanzar al siguiente nodo.
         }
+    }
+    // Método para obtener el valor en una posición específica de la lista.
+    int get(int index) const {
+        MPointer<Node> current = first;
+        int count = 0;
+        while (current != nullptr) {
+            if (count == index) {
+                return current->getDato();
+            }
+            current = current->next;
+            count++;
+        }
+        throw std::out_of_range("Índice fuera de rango");
+    }
+
+    // Método para establecer el valor en una posición específica de la lista.
+    void set(int index, int value) {
+        MPointer<Node> current = first;
+        int count = 0;
+        while (current != nullptr) {
+            if (count == index) {
+                current->set(value);
+                return;
+            }
+            current = current->next;
+            count++;
+        }
+        throw std::out_of_range("Índice fuera de rango");
+    }
+    int sizeList(){
+        int cont_node = 0;
+        MPointer<Node> current_node = first;
+        while(current_node!= nullptr){
+            ++cont_node;
+            current_node=current_node->next;
+        }
+        return cont_node;
     }
 
 private:

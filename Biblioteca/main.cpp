@@ -1,6 +1,9 @@
 #include "MPointer.h"
 #include "MPointerGC.h"
 #include "DoubleLinkedList.h"
+#include "BubbleSort.h"
+#include "InsertionSort.h"
+#include "QuickSort.h"
 #include <iostream>
 
 using namespace std;
@@ -23,37 +26,60 @@ int main() {
     *myPtr = 5;
     myPtr3 =78;
     myPtr4=85;
-
-    // Mostrar el estado antes de la asignación
+    cout <<"Verificación del correcto uso de los MPointers"<<endl;
+    //Muestra el estado antes de la asignación
     cout << "Estado antes de myPtr2 = myPtr:" << endl;
     mostrarEstado();
 
-    // Realizar shallow copy
+    // Aquí sucede el Shallow copy
     myPtr2= myPtr;
 
-    // Mostrar el estado después de la asignación
+    //Muestra el estado después de la asignación
     cout << "Estado despues de myPtr2 = myPtr:" << endl;
     mostrarEstado();
 
-    // Limpiar y finalizar
+    // Limpia y finaliza para evitar problemas con la memoria
     gc.detener();
 
     /******************************************************************/
     /******************************************************************/
-    // Crear una lista doblemente enlazada
-    DoubleLinkedList lista;
+    cout <<"Uso de los algoritmos de ordenamiento con MPointers: Quicksort, Bubblesort e Insertionsort"<<endl;
+    //Crea una lista doblemente enlazada
+    DoubleLinkedList list;
+    list.add(3895);
+    list.add(1);
+    list.add(44520);
+    list.add(22);
+    list.add(3865);
+    list.add(1032);
+    list.add(47966);
+    list.add(20101);
+    list.add(-785);
+    list.add(1715);
+    list.add(4);
+    list.add(20);
+    list.add(4796);
+    list.add(2901);
+    list.add(1215);
+    list.add(-4);
+    list.add(20786);
+    cout << "Lista original: ";
+    list.printList();
 
-    // Agregar algunos valores a la lista
-    lista.add(10);
-    lista.add(20);
-    lista.add(30);
+    //Ordenamiento con BubbleSort
+    BubbleSort::sort(list);
+    cout << "Lista ordenada con BubbleSort: ";
+    list.printList();
 
+    //Ordenamiento con InsertionSort
+    InsertionSort::sort(list);
+    cout << "Lista ordenada con InsertionSort: ";
+    list.printList();
 
-    // Imprimir la lista
-    cout << "Lista de elementos en MPointer"<<endl;
-    lista.printList();
-
-
+    //Ordenamiento con QuickSort
+    QuickSort::sort(list);
+    cout << "Lista ordenada con QuickSort: ";
+    list.printList();
 
     return 0;
 
