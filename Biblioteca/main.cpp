@@ -1,10 +1,11 @@
+#include <iostream>
+
+#include "BubbleSort.h"
+#include "DoubleLinkedList.h"
+#include "InsertionSort.h"
 #include "MPointer.h"
 #include "MPointerGC.h"
-#include "DoubleLinkedList.h"
-#include "BubbleSort.h"
-#include "InsertionSort.h"
 #include "QuickSort.h"
-#include <iostream>
 
 using namespace std;
 
@@ -15,7 +16,7 @@ void mostrarEstado() {
 int main() {
     MPointerGC& gc = MPointerGC::getInstance();
 
-    // Crear MPointers
+    //Crea los MPointers
     MPointer<int> myPtr = MPointer<int>::New();
     MPointer<int> myPtr2 = MPointer<int>::New();
     MPointer<int> myPtr3 = MPointer<int>::New();
@@ -43,7 +44,7 @@ int main() {
 
     /******************************************************************/
     /******************************************************************/
-    cout <<"Uso de los algoritmos de ordenamiento con MPointers: Quicksort, Bubblesort e Insertionsort"<<endl;
+    cout <<"----Uso de los algoritmos de ordenamiento con MPointers: Quicksort, Bubblesort e Insertionsort----"<<endl;
     //Crea una lista doblemente enlazada
     DoubleLinkedList list;
     list.add(3895);
@@ -58,7 +59,7 @@ int main() {
     list.add(1715);
     list.add(4);
     list.add(20);
-    list.add(4796);
+    list.add(4696);
     list.add(2901);
     list.add(1215);
     list.add(-4);
@@ -68,22 +69,31 @@ int main() {
 
     //Ordenamiento con BubbleSort
     BubbleSort::sort(list);
-    cout << "Lista ordenada con BubbleSort: ";
+    cout << "Lista ordenada con BubbleSort: "<<endl;
     list.printList();
 
     //Ordenamiento con InsertionSort
     InsertionSort::sort(list);
-    cout << "Lista ordenada con InsertionSort: ";
+    cout << "Lista ordenada con InsertionSort: "<<endl;
     list.printList();
 
     //Ordenamiento con QuickSort
     QuickSort::sort(list);
-    cout << "Lista ordenada con QuickSort: ";
+    cout << "Lista ordenada con QuickSort: "<<endl;
     list.printList();
 
     return 0;
 
 }
+#include <gtest/gtest.h>
 
 
+/*
+TEST(SumarTest, Positivos) {
+EXPECT_EQ(2 + 2, 4);
+}
 
+int main(int argc, char **argv) {
+    ::testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
+}*/

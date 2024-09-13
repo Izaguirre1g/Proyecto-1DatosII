@@ -29,7 +29,7 @@ private:
 
 public:
     ~MPointerGC();
-    static MPointerGC& getInstance();
+    static MPointerGC& getInstance();//Clase Singleton
     void detener();
     int registrar(void* ptr);
     void incrementarContador(int id);

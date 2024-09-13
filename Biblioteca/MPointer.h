@@ -104,7 +104,5 @@ bool MPointer<T>::operator!=(const MPointer<T>& tipo_dato) const {
     return !(*this == tipo_dato);
 }
 
-// Colocar las instanciaciones de plantilla necesarias
-// template class MPointer<int>;
 
 #endif // MPOINTER_H
