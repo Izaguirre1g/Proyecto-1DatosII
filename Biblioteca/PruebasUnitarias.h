@@ -1,0 +1,14 @@
+//
+// Created by Jose on 13/09/2024.
+//
+
+#ifndef PROYECTO_1DATOSII_PRUEBASUNITARIAS_H
+#define PROYECTO_1DATOSII_PRUEBASUNITARIAS_H
+
+
+class PruebasUnitarias {
+
+};
+
+
+#endif //PROYECTO_1DATOSII_PRUEBASUNITARIAS_H
