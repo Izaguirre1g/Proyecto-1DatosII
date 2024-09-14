@@ -83,7 +83,4 @@ int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
 }
-/*
-Compilar con: g++ -std=c++14 -isystem /usr/include/gtest -pthread test_insertionsort.cpp -lgtest -lgtest_main -o test_insertionsort
-Ejecutar con: ./test_insertionsort
 */
