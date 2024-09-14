@@ -88,7 +88,4 @@ int main(int argc, char **argv) {
     return RUN_ALL_TESTS();
 }
 
-/*
-Compilar con: g++ -std=c++14 -isystem /usr/include/gtest -pthread test_bubblesort.cpp -lgtest -lgtest_main -o test_bubblesort
-Ejecutar con: ./test_bubblesort
 */
